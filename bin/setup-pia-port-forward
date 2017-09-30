@@ -10,15 +10,23 @@ CLIENT_ID=$(cat ~/.pia_client_id 2> /dev/null || head -n 100 /dev/urandom | md5s
 # This is a bit complicated but was first thing that came to mind
 PRIVATE_IP=$(ifconfig | grep -A 1 tun0 | tail -n 1 | grep -Po '((\d+\.?){4})' | head -n 1) || (echo 'setup-forward-port: Cannot get private ip; Make sure your VPN client is connected' && false)
 
-echo 'Enter your Private Internet Access username:'
-read PIA_USERNAME
+if [ -z "$1" ]; then
+  echo 'Enter your Private Internet Access username:'
+  read PIA_USERNAME
+else
+  PIA_USERNAME=$1
+fi
 
-echo 'Enter your Private Internet Access password:'
-read -s PIA_PASSWORD
+if [ -z "$2" ]; then
+  echo 'Enter your Private Internet Access password:'
+  read -s PIA_PASSWORD
+else
+  PIA_PASSWORD=$2
+fi
 
 FORWARD_PORT=$(curl\
  -s\
  -d "user=$PIA_USERNAME&pass=$PIA_PASSWORD&client_id=$CLIENT_ID&local_ip=$PRIVATE_IP"\
  https://www.privateinternetaccess.com/vpninfo/port_forward_assignment | grep -Po '\d+')
 
-echo "Forward port is: $FORWARD_PORT"
+echo $FORWARD_PORT

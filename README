@@ -4,12 +4,21 @@ Description:
 
 Usage:
 
-  $ ./bin/setup-pia-port-forward 
-  Enter your Private Internet Access username:
-  p1234567
-  Enter your Private Internet Access password:
-  Forward port is: 51900
-  $ 
+  Interactive mode:
+
+    $ ./bin/setup-pia-port-forward
+    Enter your Private Internet Access username:
+    p1234567
+    Enter your Private Internet Access password:
+    Forward port is: 51900
+    $
+
+  Scripted mode:
+
+    $ FORWARD_PORT=$(./bin/setup-pia-port-forward $PIA_USERNAME $PIA_PASSWORD)
+    $ echo $FORWARD_PORT
+    51900
+    $
 
 Credits:
 
