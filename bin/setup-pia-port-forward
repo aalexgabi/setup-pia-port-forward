@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Stop on error
+set -e
+set -o pipefail
+
+# If client id not present generate one
+CLIENT_ID=$(cat ~/.pia_client_id 2> /dev/null || head -n 100 /dev/urandom | md5sum | tr -d " -" | tee ~/.pia_client_id)
+
+# This is a bit complicated but was first thing that came to mind
+PRIVATE_IP=$(ifconfig | grep -A 1 tun0 | tail -n 1 | grep -Po '((\d+\.?){4})' | head -n 1) || (echo 'setup-forward-port: Cannot get private ip; Make sure your VPN client is connected' && false)
+
+echo 'Enter your Private Internet Access username:'
+read PIA_USERNAME
+
+echo 'Enter your Private Internet Access password:'
+read -s PIA_PASSWORD
+
+FORWARD_PORT=$(curl\
+ -s\
+ -d "user=$PIA_USERNAME&pass=$PIA_PASSWORD&client_id=$CLIENT_ID&local_ip=$PRIVATE_IP"\
+ https://www.privateinternetaccess.com/vpninfo/port_forward_assignment | grep -Po '\d+')
+
+echo "Forward port is: $FORWARD_PORT"

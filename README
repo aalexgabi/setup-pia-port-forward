@@ -1,0 +1,16 @@
+Description:
+
+  This script allows setting up port forwarding when using openvpn (and maybe other methods) to connect to Private Internet Access VPN provider
+
+Usage:
+
+  $ ./bin/setup-pia-port-forward 
+  Enter your Private Internet Access username:
+  p1234567
+  Enter your Private Internet Access password:
+  Forward port is: 51900
+  $ 
+
+Credits:
+
+  I wrote this script thanks to Brent Nowak who provided all details on how the Private Internet Access API works in his blog post here: https://brentnowak.net/2014/10/22/port-forwarding-with-private-internet-access-vpn-service/
